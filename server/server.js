@@ -16,7 +16,7 @@ class Server {
     middleware(){
         this.app.use(cors('*'))
         this.app.use(express.urlencoded({extended:true}))
-        this.app.use(express.static(path.join(__dirname,'public','lucas')))
+        this.app.use(express.static(('public')))
     }
     routes(){
         serverRoutes(this.app)

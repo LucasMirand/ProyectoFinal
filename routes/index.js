@@ -9,10 +9,10 @@ const serverRoutes = app =>{
     //CARRITO
     apiCarrito(app)
 
-    // app.get('/',(req,res,next) =>{
-    //     console.log('Hola desde Routes')
-    //     res.send('Ok desde Routes')
-    // })
+    app.get('/',(req,res,next) =>{
+        console.log('Hola desde Routes')
+        res.send('Ok desde Routes')
+    })
 
 }
 
