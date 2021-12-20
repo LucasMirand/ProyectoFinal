@@ -5,19 +5,18 @@ class HandlerProds{
     constructor(url) {
         this.url = url
     }
-    getProds() {
-        let showProds = fs.readFileSync(this.url)
-        // let prods= JSON.parse(showProds)
+    async getProds() {
+        let showProds = await fs.readFile(this.url)
+        let prods= JSON.parse(showProds)
         try {
-            return showProds
+            return prods
         }       
         catch (error) {
-           console.log('Error en getProd');
+           return 'Error en getProd';
        } 
     }
-    getXProds(param) {
-        let showProds = fs.readFileSync(this.url)
-        let prods= JSON.parse(showProds)
+    async getXProds(param) {
+        let prods = await this.getProds()
         try {
             let match = prods.filter(element => Number(element.id) === Number(param.id)) 
             if(match != ''){
@@ -30,9 +29,8 @@ class HandlerProds{
            console.log('Error en getProd');
        } 
     }
-    addProd(newProd){
-        let showProds = fs.readFileSync(this.url,jsonData)
-        let prods= JSON.parse(showProds)
+    async addProd(newProd){
+        let prods= await this.getProds()
         try {
             let mayorId=0
             //Encontrar ID a Asignar
@@ -49,15 +47,14 @@ class HandlerProds{
             console.log(prodAdd);
             showProds.push(prodAdd)
             let jsonData = JSON.stringify(showProds,null,2)
-            let reescribir = fs.writeFileSync(this.url, jsonData)
+            let reescribir = await fs.writeFile(this.url, jsonData)
             return prodAdd;
         } catch (error) {
             return 'Error en NewProd'
         }
     }
-    modifProd(idMod, objMod){
-        let showProds = fs.readFileSync(this.url,jsonData)
-        let prods = JSON.parse(showProds)
+    async modifProd(idMod, objMod){
+        let prods = await this.getProds()
         let num = Number(idMod.id)
         let posicion
         try {
@@ -74,8 +71,8 @@ class HandlerProds{
             }
 
             let jsonData = JSON.stringify(prods,null,2)
-            let escribe = fs.writeFileSync(this.url, jsonData)
-            return arrayProds[posicion]
+            let escribe = await fs.writeFile(this.url, jsonData)
+            return prods[posicion]
 
             if (status === false) {
                 return 'No se encontró id'
@@ -85,9 +82,8 @@ class HandlerProds{
             return console.log('Error en modificar CATCH');
         }
     }
-    deleteProd(idDel){
-        let showProds = fs.readFileSync(this.url,jsonData)
-        let prods = JSON.parse(showProds)
+    async deleteProd(idDel){
+        let prods = await this.getProds()
         let num = Number(idDel.id)
         let posicion
         let eliminado
@@ -102,10 +98,10 @@ class HandlerProds{
         }    
             let jsonData = JSON.stringify(prods,null,2)
             // console.log(jsonData);
-            let escribe = fs.writeFileSync(this.url, jsonData)
+            let escribe = await fs.writeFile(this.url, jsonData)
             return eliminado
         } catch (error) {
-            return error   
+            return 'Error en Delete'   
         }
     }
 }
